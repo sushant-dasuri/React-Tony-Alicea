@@ -1,4 +1,5 @@
 const rootNode = document.getElementById("app");
+console.log(rootNode);
 const root = ReactDOM.createRoot(rootNode);
 root.render(React.createElement(App));
 
