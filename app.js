@@ -19,5 +19,22 @@ function App() {
 
 console.log(App);
 
-console.log(React.createElement(App));
+
+//before React does the work
+let articleElements = document.getElementsByTagName("article");
+let articleElement = document.getElementsByTagName("article")[0];
+
+console.log(articleElements);
+console.log(articleElement);    
+
+
+//after react does it work
+setTimeout(() => {
+    let articleElements = document.getElementsByTagName("article");
+let articleElement = document.getElementsByTagName("article")[0];
+
+console.log(articleElements);
+console.log(articleElement);    
+}, 1000);
+
 
