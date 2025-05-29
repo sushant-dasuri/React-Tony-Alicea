@@ -1,23 +1,9 @@
-const countApp = {
-    
-    getCount: () => {
-        const countElement = document.getElementById('count');
-        return Number(countElement.textContent);
-        },
+function countDown(num) {
+    console.log(num);
 
-        setCount: (val) => {
-            const countElement = document.getElementById('count');
-            countElement.textContent = val;
-        },
+    if(num === 0) return;
+
+    countDown(num - 1);
 }
 
-function setCount() {
-    const count = countApp.getCount();
-   if(count >= 5) {
-    countApp.setCount(0);
-   }
-
-    else {
-     countApp.setCount(count + 1);
-    }
-}
+countDown(5);
