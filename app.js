@@ -7,12 +7,14 @@ function App() {
     const counterOne = <Counter name={counterName} />;
     const counterTwo = <Counter2 name={counterName} />;
     return (
-        <section>
-            <h1>Counters</h1>
+        <>
             <section>
-                { counterName === "One" ? counterOne : counterTwo }
+                <h1>Counters</h1>
+                <section>
+                    { counterName === "One" ? counterOne : counterTwo }
+                </section>
             </section>
-        </section>
+        </>
     );
 }
 
