@@ -1,5 +1,6 @@
 const rootNode = document.getElementById("app");
 console.log(rootNode);
+let counterName = "One";
 const root = ReactDOM.createRoot(rootNode);
 root.render(React.createElement(App));
 
@@ -7,8 +8,8 @@ function App() {
     return React.createElement("section", null,
            React.createElement("h1", null, "Counters"),
            React.createElement("section", null,
-            React.createElement(Counter, {name: "One"}),
-            React.createElement(Counter, {name: "Two"}))
+           counterName === "One" ? React.createElement(Counter, {name: counterName}):
+           React.createElement(Counter2, {name: counterName}))
     )
 }
 
@@ -20,5 +21,23 @@ function Counter({name}) {
             React.createElement("button", null, "Click me!"),
         )
     );
+}
+
+function Counter2({name}) {
+    return (
+        React.createElement("article", null,
+            React.createElement("h2", null, "Counter ", name),
+            React.createElement("p", null, "Times Clicked: 1"),
+            React.createElement("button", null, "Click me!"),
+        )
+    );
+}
+
+
+function rerender() {
+    console.log("Rerender...");
+    counterName = "Two";
+    root.render(React.createElement(App));
+
 }
 

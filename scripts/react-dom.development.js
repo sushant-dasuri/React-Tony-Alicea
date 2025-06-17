@@ -11115,12 +11115,17 @@
   }
 
   function removeChild(parentInstance, child) {
+      console.log(`Removing child...`);
+      console.log(child);
     parentInstance.removeChild(child);
   }
   function removeChildFromContainer(container, child) {
     if (container.nodeType === COMMENT_NODE) {
       container.parentNode.removeChild(child);
     } else {
+       console.log(`Removing child from container...`);
+      console.dir(container);
+      console.dir(child);
       container.removeChild(child);
     }
   }
