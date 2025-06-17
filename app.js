@@ -13,7 +13,6 @@ function App() {
 }
 
 function Counter({name}) {
-    name = "Three"
     return (
         React.createElement("article", null,
             React.createElement("h2", null, "Counter ", name),
