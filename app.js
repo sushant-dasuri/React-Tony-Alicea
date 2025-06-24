@@ -1,47 +1,47 @@
-// https://github.com/trekhleb/javascript-algorithms/tree/master/src/data-structures/linked-list
+const rootNode = document.getElementById('app');
+const root = ReactDOM.createRoot(rootNode);
+let counterName = "One";
+root.render(<App />);
 
-class LinkedListNode {
-    constructor(val, next = null) {
-        this.value = val;
-        this.next = next;
-    }
+function App() {
+    const counterOne = <Counter name={counterName} />;
+    const counterTwo = <Counter2 name={counterName} />;
+    return (
+        <>
+            <h1>Counters</h1>
+            <section>
+                {counterName === "One" ? counterOne : counterTwo}
+            </section>
+        </>
+    );
 }
 
-class LinkedList {
-    constructor() {
-        this.head = null;
-        this.tail = null;
-    }
-
-    append(val) {
-        const newNode = new LinkedListNode(val);
-    
-        // If there is no head yet let's make new node a head.
-        if (!this.head) {
-          this.head = newNode;
-          this.tail = newNode;
-    
-          return this;
-        }
-    
-        // Attach new node to the end of linked list.
-        this.tail.next = newNode;
-        this.tail = newNode;
-    
-        return this;
-    }
-
-    print() {
-        let currentNode = this.head;
-        while (currentNode) {
-          console.log(currentNode.value);
-          currentNode = currentNode.next;
-        }
-    }
+function Counter({ name }) {
+    return (
+        <article>
+            <h2>Counter {name}</h2>
+            <p>You clicked 1 times</p>
+            <button className="button">
+                Click me
+            </button>
+        </article>
+    );
 }
 
-let myLinkedList = new LinkedList();
-myLinkedList.append("Tony");
-myLinkedList.append("Alicea");
-myLinkedList.append("Understanding React");
-myLinkedList.print();
+function Counter2({ name }) {
+    return (
+        <article>
+            <h2>Counter {name}</h2>
+            <p>Times clicked: 1</p>
+            <button className="button">
+                Click me
+            </button>
+        </article>
+    );
+}
+
+function rerender() {
+    console.log("Rerender...");
+    counterName = "Two";
+    root.render(<App />);
+}
