@@ -45,3 +45,16 @@ function rerender() {
     counterName = "Two";
     root.render(<App />);
 }
+
+console.log("1" == 1);
+console.log("1" === 1);
+
+let a = {name: "Tony"};
+let b = {name: "Tony"};
+let c = a;
+
+console.log(a === b); // false, different objects
+console.log(a === c); // true, same object reference
+console.log(a == b); // false, different objects
+console.log(Object.is(a, b)); // false, different objects
+console.log(Object.is(a, c)); // true, same object reference    
