@@ -26614,7 +26614,7 @@
     var current = unitOfWork.alternate;
     setCurrentFiber(unitOfWork);
     var next;
-
+    console.log("Performing Work");
     if ( (unitOfWork.mode & ProfileMode) !== NoMode) {
       startProfilerTimer(unitOfWork);
       next = beginWork$1(current, unitOfWork, subtreeRenderLanes);
@@ -26640,6 +26640,7 @@
     // Attempt to complete the current unit of work, then move to the next
     // sibling. If there are no more siblings, return to the parent fiber.
     var completedWork = unitOfWork;
+        console.log("Completing Work");
 
     do {
       // The current, flushed, state of this fiber is the alternate. Ideally
@@ -27484,6 +27485,7 @@
       // error See ReactErrorUtils for more information.
       // Before entering the begin phase, copy the work-in-progress onto a dummy
       // fiber. If beginWork throws, we'll use this to reset the state.
+          console.log("Beginning Work");
       var originalWorkInProgressCopy = assignFiberPropertiesInDEV(dummyFiber, unitOfWork);
 
       try {
