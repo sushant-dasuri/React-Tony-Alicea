@@ -1,82 +1,57 @@
-
-
-
-const rootNode = document.getElementById('app');
-const root = ReactDOM.createRoot(rootNode);
-let counterName = "One";
-root.render(<App />);
-
-function App() {
-    const counterOne = <Counter name={counterName} />;
-    const counterTwo = <Counter2 name={counterName} />;
-    return (
-        <>
-            <h1>Counters</h1>
-            <section>
-                {counterName === "One" ? counterOne : counterTwo}
-            </section>
-        </>
-    );
+class LinkedListNode {
+    constructor(val, next = null) {
+        this.value = val;
+        this.next = next;
+    }
 }
 
-function Counter({ name }) {
-
-    const clickHandler = (event) => {
-        console.log("React handled the click event");
-        console.log(event);
+class Queue {
+    constructor() {
+        this.head = null;
+        this.tail = null;
     }
 
-    const parentClickHandler = (event) => {
-        console.log("Parent click handler");
+    append(val) {
+        const newNode = new LinkedListNode(val);
+    
+        // If there is no head yet let's make new node a head.
+        if (!this.head) {
+          this.head = newNode;
+          this.tail = newNode;
+    
+          return this;
+        }
+    
+        // Attach new node to the end of linked list.
+        this.tail.next = newNode;
+        this.tail = newNode;
+    
+        return this;
     }
 
-    const linkClickHandler = (event) => {
-        event.preventDefault();
-        console.log("Going to Site");
-        event.stopPropagation(); // Prevents the parent click handler from being called
-        
+    pop() {
+        let originalHead = this.head;
+        if(this.head){
+            this.head = this.head.next;
+        }
+        return originalHead ? originalHead.value : null;
     }
 
-    return (
-        <article onClick={parentClickHandler}>
-            <h2>Counter {name}</h2>
-            <p>You clicked 1 times</p>
-            <button className="button" onClick={clickHandler}>
-                Click me
-            </button>
-            <p>
-                <a href="http://understandingreact.com" target="_blank" onClick={linkClickHandler}>
-                Understanding React
-                </a>
-            </p>
-        </article>
-    );
+    print() {
+        let currentNode = this.head;
+        while (currentNode) {
+          console.log(currentNode.value);
+          currentNode = currentNode.next;
+        }
+    }
 }
 
-function Counter2({ name }) {
-    return (
-        <article>
-            <h2>Counter {name}</h2>
-            <p>Times clicked: 1</p>
-            <button className="button">
-                Click me
-            </button>
-        </article>
-    );
-}
-
-function rerender() {
-    console.log("Rerender...");
-    counterName = "Two";
-    root.render(<App />);
-}
-
-rootNode.addEventListener("click", function(event) {
-  if(event.target.tagName === "BUTTON") {
-     console.log("Clicked the button");
-  }
-  else {
-    console.log("Didn't clicked the button");
-  }
-
-})
+let myQueue = new Queue();
+myQueue.append("Tony");
+myQueue.append("Alicea");
+myQueue.append("Understanding React");
+myQueue.print();
+console.log("---");
+console.log("Popped: " + myQueue.pop());
+console.log("Popped: " + myQueue.pop());
+myQueue.print();
