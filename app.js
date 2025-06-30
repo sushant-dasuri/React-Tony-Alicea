@@ -1,17 +1,34 @@
-const numbers = [1, 2, 3, 4, 5];
-
-const reducerFn = (accumulator, currentValue) => {
-    console.log("--- Iteration ---");
-    console.log("Accumulator: " + accumulator);
-    console.log("Current Value: " + currentValue);
-
-    const nextAccumulator = accumulator + " " + currentValue;
-    console.log("Next Accumulator: " + nextAccumulator);
-
-    return nextAccumulator;
+const globalState ={
+    NorthSouth: "Green",
+    CarWaiting: false,
+    WaitTime: 30
 }
 
-const initalValue = 0;
-const sum = numbers.reduce(reducerFn, initalValue);
+function reducer(state, action) {
+    switch(action.type) {
+        case('Car Waiting'): {
+            return {
+                ...state,
+                    CarWaiting: true,
+                    WaitTime: action.payload.WaitTime
+            }
+        }
 
-console.log(sum);
+        case ("Finish Waiting"): {
+            return {
+                ...state,
+                NorthSouth: "Yellow",
+            }
+        }
+
+        default : {
+            return state;
+        }
+    }
+}
+
+console.dir(globalState);
+const newState1 = reducer(globalState, {type: 'Car Waiting', payload: {WaitTime: 5}});
+console.dir(newState1);
+const newState2 = reducer(newState1, {type: 'Finish Waiting'});
+console.dir(newState2);
