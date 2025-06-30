@@ -1,79 +1,17 @@
-const rootNode = document.getElementById('app');
-const root = ReactDOM.createRoot(rootNode);
-let counterName = "One";
-root.render(<App />);
+const numbers = [1, 2, 3, 4, 5];
 
-function App() {
-    const counterOne = <Counter name={counterName} />;
-    const counterTwo = <Counter2 name={counterName} />;
-    return (
-        <>
-            <h1>Counters</h1>
-            <section>
-                {counterName === "One" ? counterOne : counterTwo}
-            </section>
-        </>
-    );
+const reducerFn = (accumulator, currentValue) => {
+    console.log("--- Iteration ---");
+    console.log("Accumulator: " + accumulator);
+    console.log("Current Value: " + currentValue);
+
+    const nextAccumulator = accumulator + " " + currentValue;
+    console.log("Next Accumulator: " + nextAccumulator);
+
+    return nextAccumulator;
 }
 
-function Counter({ name }) {
+const initalValue = 0;
+const sum = numbers.reduce(reducerFn, initalValue);
 
-    const clickHandler = (event) => {
-        console.log("React handled the click event");
-        console.log(event);
-    }
-
-    const parentClickHandler = (event) => {
-        console.log("Parent click handler");
-    }
-
-    const linkClickHandler = (event) => {
-        event.preventDefault();
-        console.log("Going to Site");
-        event.stopPropagation(); // Prevents the parent click handler from being called
-        
-    }
-
-    return (
-        <article onClick={parentClickHandler}>
-            <h2>Counter {name}</h2>
-            <p>You clicked 1 times</p>
-            <button className="button" onClick={clickHandler}>
-                Click me
-            </button>
-            <p>
-                <a href="http://understandingreact.com" target="_blank" onClick={linkClickHandler}>
-                Understanding React
-                </a>
-            </p>
-        </article>
-    );
-}
-
-function Counter2({ name }) {
-    return (
-        <article>
-            <h2>Counter {name}</h2>
-            <p>Times clicked: 1</p>
-            <button className="button">
-                Click me
-            </button>
-        </article>
-    );
-}
-
-function rerender() {
-    console.log("Rerender...");
-    counterName = "Two";
-    root.render(<App />);
-}
-
-rootNode.addEventListener("click", function(event) {
-  if(event.target.tagName === "BUTTON") {
-     console.log("Clicked the button");
-  }
-  else {
-    console.log("Didn't clicked the button");
-  }
-
-})
+console.log(sum);
