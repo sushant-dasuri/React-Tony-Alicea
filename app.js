@@ -1,34 +1,82 @@
-const globalState ={
-    NorthSouth: "Green",
-    CarWaiting: false,
-    WaitTime: 30
+
+
+
+const rootNode = document.getElementById('app');
+const root = ReactDOM.createRoot(rootNode);
+let counterName = "One";
+root.render(<App />);
+
+function App() {
+    const counterOne = <Counter name={counterName} />;
+    const counterTwo = <Counter2 name={counterName} />;
+    return (
+        <>
+            <h1>Counters</h1>
+            <section>
+                {counterName === "One" ? counterOne : counterTwo}
+            </section>
+        </>
+    );
 }
 
-function reducer(state, action) {
-    switch(action.type) {
-        case('Car Waiting'): {
-            return {
-                ...state,
-                    CarWaiting: true,
-                    WaitTime: action.payload.WaitTime
-            }
-        }
+function Counter({ name }) {
 
-        case ("Finish Waiting"): {
-            return {
-                ...state,
-                NorthSouth: "Yellow",
-            }
-        }
-
-        default : {
-            return state;
-        }
+    const clickHandler = (event) => {
+        console.log("React handled the click event");
+        console.log(event);
     }
+
+    const parentClickHandler = (event) => {
+        console.log("Parent click handler");
+    }
+
+    const linkClickHandler = (event) => {
+        event.preventDefault();
+        console.log("Going to Site");
+        event.stopPropagation(); // Prevents the parent click handler from being called
+        
+    }
+
+    return (
+        <article onClick={parentClickHandler}>
+            <h2>Counter {name}</h2>
+            <p>You clicked 1 times</p>
+            <button className="button" onClick={clickHandler}>
+                Click me
+            </button>
+            <p>
+                <a href="http://understandingreact.com" target="_blank" onClick={linkClickHandler}>
+                Understanding React
+                </a>
+            </p>
+        </article>
+    );
 }
 
-console.dir(globalState);
-const newState1 = reducer(globalState, {type: 'Car Waiting', payload: {WaitTime: 5}});
-console.dir(newState1);
-const newState2 = reducer(newState1, {type: 'Finish Waiting'});
-console.dir(newState2);
+function Counter2({ name }) {
+    return (
+        <article>
+            <h2>Counter {name}</h2>
+            <p>Times clicked: 1</p>
+            <button className="button">
+                Click me
+            </button>
+        </article>
+    );
+}
+
+function rerender() {
+    console.log("Rerender...");
+    counterName = "Two";
+    root.render(<App />);
+}
+
+rootNode.addEventListener("click", function(event) {
+  if(event.target.tagName === "BUTTON") {
+     console.log("Clicked the button");
+  }
+  else {
+    console.log("Didn't clicked the button");
+  }
+
+})
