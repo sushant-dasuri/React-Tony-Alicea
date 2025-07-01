@@ -1,57 +1,40 @@
-class LinkedListNode {
-    constructor(val, next = null) {
-        this.value = val;
-        this.next = next;
-    }
+
+
+
+
+
+
+const rootNode = document.getElementById('app');
+const root = ReactDOM.createRoot(rootNode);
+let counterName = "One";
+root.render(<App />);
+
+function App() {
+  
+    return (
+        <>
+            <h1>Counters</h1>
+            <section>
+                <Counter name="One" />
+            </section>
+        </>
+    );
 }
 
-class Queue {
-    constructor() {
-        this.head = null;
-        this.tail = null;
-    }
+function Counter(props) {
 
-    append(val) {
-        const newNode = new LinkedListNode(val);
-    
-        // If there is no head yet let's make new node a head.
-        if (!this.head) {
-          this.head = newNode;
-          this.tail = newNode;
-    
-          return this;
-        }
-    
-        // Attach new node to the end of linked list.
-        this.tail.next = newNode;
-        this.tail = newNode;
-    
-        return this;
-    }
+    const [state, dispatch] = React.useReducer(() => {
 
-    pop() {
-        let originalHead = this.head;
-        if(this.head){
-            this.head = this.head.next;
-        }
-        return originalHead ? originalHead.value : null;
-    }
+    }, {clicks: 0});
 
-    print() {
-        let currentNode = this.head;
-        while (currentNode) {
-          console.log(currentNode.value);
-          currentNode = currentNode.next;
-        }
-    }
+    return (
+        <article>
+            <h2>Counter {props.name}</h2>
+            <p>You clicked 1 times</p>
+            <button className="button">
+                Click me
+            </button>
+        </article>
+    );
 }
 
-let myQueue = new Queue();
-myQueue.append("Tony");
-myQueue.append("Alicea");
-myQueue.append("Understanding React");
-myQueue.print();
-console.log("---");
-console.log("Popped: " + myQueue.pop());
-console.log("Popped: " + myQueue.pop());
-myQueue.print();
