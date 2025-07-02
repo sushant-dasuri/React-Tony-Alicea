@@ -23,27 +23,13 @@ function App() {
 
 function Counter(props) {
 
-    const [state, dispatch] = React.useReducer((state, action) => {
-
-        switch( action.type) {
-            case 'increment':
-                return { clicks: state.clicks + 1 };
-            default: 
-                throw new Error();
-        }
-
-    }, {clicks: 0});
-
-    function clickHandler() {
-        dispatch({ type: 'increment' });
-      
-    }
+    const [numOfClicks, setNumOfClicks] = React.useState(0);
 
     return (
         <article>
             <h2>Counter {props.name}</h2>
-            <p>You clicked {state.clicks} times</p>
-            <button className="button" onClick={clickHandler}>
+            <p>You clicked {numOfClicks} times</p>
+            <button className="button">
                 Click me
             </button>
         </article>
