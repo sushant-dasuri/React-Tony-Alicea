@@ -16,6 +16,7 @@ function App() {
             <h1>Counters</h1>
             <section>
                 <Counter name="One" />
+                 <Counter name="Two" />
             </section>
         </>
     );
@@ -24,12 +25,19 @@ function App() {
 function Counter(props) {
 
     const [numOfClicks, setNumOfClicks] = React.useState(0);
+    const [myName, setMyName] = React.useState("Sushant");
+    const [state, dispatch] = React.useReducer(() => {
 
+    }, "Dasuri")
+
+    function incrementCounter() {
+        setNumOfClicks(numOfClicks + 1);
+    }
     return (
         <article>
             <h2>Counter {props.name}</h2>
             <p>You clicked {numOfClicks} times</p>
-            <button className="button">
+            <button className="button" onClick={incrementCounter}>
                 Click me
             </button>
         </article>
