@@ -1,51 +1,48 @@
-
-
-
-
-
-
-const rootNode = document.getElementById('app');
-const root = ReactDOM.createRoot(rootNode);
-let counterName = "One";
-root.render(<App />);
-
-function App() {
-  
-    return (
-        <>
-            <h1>Counters</h1>
-            <section>
-                <Counter name="One" />
-                 <Counter name="Two" />
-            </section>
-        </>
-    );
+const person1 = {
+    firstname: 'Tony',
+    lastname: 'Alicea',
+    course: {
+        name: 'Understanding React'
+    }
 }
 
-function Counter(props) {
-
-    const [numOfClicks, setNumOfClicks] = React.useState(0);
-
-    function wrongIncrementCounter() {
-        setNumOfClicks(numOfClicks + 1);
-          setNumOfClicks(numOfClicks + 1);
-            setNumOfClicks(numOfClicks + 1);
+const person2 = {
+    firstname: 'Tony',
+    lastname: 'Alicea',
+    course: {
+        name: 'Understanding React'
     }
-
-    function incrementCounter() {
-        setNumOfClicks(n => n + 1);
-         setNumOfClicks(n => n + 1);
-          setNumOfClicks(n => n + 1);
-       
-    }
-    return (
-        <article>
-            <h2>Counter {props.name}</h2>
-            <p>You clicked {numOfClicks} times</p>
-            <button className="button" onClick={incrementCounter}>
-                Click me
-            </button>
-        </article>
-    );
 }
 
+console.log(Object.is(person1, person2));
+const objectIs = Object.is;
+
+function shallowEqual(objA, objB) {
+    if (objectIs(objA, objB)) {
+      return true;
+    }
+
+    if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
+      return false;
+    }
+
+    var keysA = Object.keys(objA);
+    var keysB = Object.keys(objB);
+
+    if (keysA.length !== keysB.length) {
+      return false;
+    } // Test for A's keys different from B.
+
+
+    for (var i = 0; i < keysA.length; i++) {
+      var currentKey = keysA[i];
+
+      if (!hasOwnProperty.call(objB, currentKey) || !objectIs(objA[currentKey], objB[currentKey])) {
+        return false;
+      }
+    }
+
+    return true;
+}
+
+console.log(shallowEqual(person1, person2)); // false because course points to a different object in each case
