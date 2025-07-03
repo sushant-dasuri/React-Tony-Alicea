@@ -25,23 +25,23 @@ function App() {
 function Counter(props) {
 
     const [numOfClicks, setNumOfClicks] = React.useState(0);
-    let myName = " ";
-    let setMyName = null;
-    if(numOfClicks < 2) {
-         [myName, setMyName] = React.useState("Sushant");
-    }
-        const [state, dispatch] = React.useReducer(() => {
 
-    }, "Dasuri")
+    function wrongIncrementCounter() {
+        setNumOfClicks(numOfClicks + 1);
+          setNumOfClicks(numOfClicks + 1);
+            setNumOfClicks(numOfClicks + 1);
+    }
 
     function incrementCounter() {
-        setNumOfClicks(numOfClicks + 1);
+        setNumOfClicks(n => n + 1);
+         setNumOfClicks(n => n + 1);
+          setNumOfClicks(n => n + 1);
+       
     }
     return (
         <article>
             <h2>Counter {props.name}</h2>
             <p>You clicked {numOfClicks} times</p>
-            <p>{myName} | {state}</p>
             <button className="button" onClick={incrementCounter}>
                 Click me
             </button>
