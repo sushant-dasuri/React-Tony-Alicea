@@ -29,7 +29,7 @@ function Counter(props) {
 
         console.log("In UseEffect");
         document.title = "Counter : " + numOfClicks.total;
-    });
+    }, [numOfClicks.total]);
     return (
         <article>
             <h2>Counter {props.name}</h2>
