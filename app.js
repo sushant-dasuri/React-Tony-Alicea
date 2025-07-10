@@ -1,22 +1,50 @@
-function createCounter(incBy) {
-    let value = 0;
+const rootNode = document.getElementById('app');
+const root = ReactDOM.createRoot(rootNode);
+let counterName = "One";
+root.render(<App />);
 
-    function increment() {
-        value += incBy;
-        console.log(value);
-    }
-
-    const message = `Current value is ${value}`;
-    function log() {
-        console.log(message);
-    }
-
-    return [increment, log];
+function App() {
+  
+    return (
+        <>
+            <h1>Counters</h1>
+            <section>
+                <Counter name="One" />
+            </section>
+        </>
+    );
 }
 
-const [increment, log] = createCounter(1);
-increment();
-increment();
-increment();
+function Counter(props) {
 
-log();
+    const [numOfClicks, setNumOfClicks] = React.useState({total: 0});
+
+    function incrementCounter() {
+       setNumOfClicks({...numOfClicks, total: numOfClicks.total + 1})
+       
+    }
+
+    const message  = `Number of clicks is : ${numOfClicks.total}`;
+
+    React.useEffect(() => {
+
+       const id = setInterval(() => {
+                console.log(message);
+            }, 1000);
+
+            return () => {
+                clearInterval(id);
+            };
+    }, [numOfClicks.total]);
+    return (
+        <article>
+            <h2>Counter {props.name}</h2>
+            <p>You clicked {numOfClicks.total} times</p>
+              <p>
+                <button className="button" onClick={incrementCounter}>
+                    Click me
+                </button>
+            </p>
+        </article>
+    );
+}
