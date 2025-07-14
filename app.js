@@ -17,20 +17,25 @@ function App() {
 
 function Counter(props) {
 
-    const numOfClicksRef = React.useRef({total: 0});
+    const [numOfClicks, setNumOfClicks] = React.useState({total: 0});
+
+    const buttonRef = React.useRef();
+
+    React.useEffect(() => {
+        buttonRef.current.focus();
+    }, []);
 
     function incrementCounter() {
-      numOfClicksRef.current.total = numOfClicksRef.current.total + 1;
-      alert(`You've clicked ${numOfClicksRef.current.total} times`);
+       setNumOfClicks({...numOfClicks, total: numOfClicks.total + 1})
        
     }
 
         return (
         <article>
             <h2>Counter {props.name}</h2>
-            <p>You clicked {numOfClicksRef.current.total} times</p>
+            <p>You clicked {numOfClicks.total} times</p>
               <p>
-                <button className="button" onClick={incrementCounter}>
+                <button className="button" onClick={incrementCounter} ref={buttonRef}>
                     Click me
                 </button>
             </p>
