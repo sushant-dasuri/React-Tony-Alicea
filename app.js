@@ -1,29 +1,31 @@
+
 const rootNode = document.getElementById('app');
 const root = ReactDOM.createRoot(rootNode);
 let counterName = "One";
 root.render(<App />);
 
 function App() {
+
+    const ref = React.useRef();
+
+    React.useEffect(() => {
+        ref.current.focus();
+    }, [])
   
     return (
         <>
             <h1>Counters</h1>
             <section>
-                <Counter name="One" />
+                <Counter name="One" ref={ref} />
+                 <Counter name="Two" ref={ref} />
             </section>
         </>
     );
 }
 
-function Counter(props) {
+const Counter = React.forwardRef(function Counter(props, buttonRef) {
 
     const [numOfClicks, setNumOfClicks] = React.useState({total: 0});
-
-    const buttonRef = React.useRef();
-
-    React.useEffect(() => {
-        buttonRef.current.focus();
-    }, []);
 
     function incrementCounter() {
        setNumOfClicks({...numOfClicks, total: numOfClicks.total + 1})
@@ -41,4 +43,4 @@ function Counter(props) {
             </p>
         </article>
     );
-}
+})
