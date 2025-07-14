@@ -17,29 +17,18 @@ function App() {
 
 function Counter(props) {
 
-    const [numOfClicks, setNumOfClicks] = React.useState({total: 0});
+    const numOfClicksRef = React.useRef({total: 0});
 
     function incrementCounter() {
-       setNumOfClicks({...numOfClicks, total: numOfClicks.total + 1})
+      numOfClicksRef.current.total = numOfClicksRef.current.total + 1;
+      alert(`You've clicked ${numOfClicksRef.current.total} times`);
        
     }
 
-    const message  = `Number of clicks is : ${numOfClicks.total}`;
-
-    React.useEffect(() => {
-
-       const id = setInterval(() => {
-                console.log(message);
-            }, 1000);
-
-            return () => {
-                clearInterval(id);
-            };
-    }, [numOfClicks.total]);
-    return (
+        return (
         <article>
             <h2>Counter {props.name}</h2>
-            <p>You clicked {numOfClicks.total} times</p>
+            <p>You clicked {numOfClicksRef.current.total} times</p>
               <p>
                 <button className="button" onClick={incrementCounter}>
                     Click me
