@@ -1,3 +1,4 @@
+import React from "react";
 
 const rootNode = document.getElementById('app');
 const root = ReactDOM.createRoot(rootNode);
@@ -6,41 +7,63 @@ root.render(<App />);
 
 function App() {
 
-    const ref = React.useRef();
-
-    React.useEffect(() => {
-        ref.current.focus();
-    }, [])
+  
   
     return (
         <>
             <h1>Counters</h1>
             <section>
                 <Counter name="One" />
-                 <Counter name="Two" ref={ref} />
+                 <Counter name="Two" />
             </section>
         </>
     );
 }
 
-const Counter = React.forwardRef(function Counter(props, buttonRef) {
+function useDocumentTitle (title) {
+   return React.useEffect(() => {
+    const originalTitle = document.title;
+    document.title = title;
+    return () => {
+        document.title = originalTitle; 
+    }
+   }, [title]);
+}
 
-    const [numOfClicks, setNumOfClicks] = React.useState({total: 0});
+function useCounter() {
+    const [counterVal, setCounterVal] = React.useState({total: 0});
+
+    const increment = () => {
+        setCounterVal({...counterVal, total: counterVal.total + 1});
+    }
+
+    return {
+        counterVal,
+        increment
+    }
+}
+
+function Counter(props) {
+
+    const [counter, incrementCount] = useCounter();
+
+
+   const updateTitle = useDocumentTitle("Clicks: " + numOfClicks.total);
 
     function incrementCounter() {
-       setNumOfClicks({...numOfClicks, total: numOfClicks.total + 1})
+       incrementCount();
        
     }
 
         return (
         <article>
             <h2>Counter {props.name}</h2>
-            <p>You clicked {numOfClicks.total} times</p>
+            <p>You clicked {counter.total} times</p>
               <p>
-                <button className="button" onClick={incrementCounter} ref={buttonRef}>
+                <button className="button" onClick={incrementCounter}>
                     Click me
                 </button>
             </p>
         </article>
     );
-})
+}
