@@ -16,7 +16,7 @@ function App() {
         <>
             <h1>Counters</h1>
             <section>
-                <Counter name="One" ref={ref} />
+                <Counter name="One" />
                  <Counter name="Two" ref={ref} />
             </section>
         </>

@@ -21,52 +21,46 @@
             const { useState, use, Suspense } = React.default;
             const { createRoot } = ReactDOM.default;
 
-            const promiseCache = new Map();
+          function App() {
 
-            async function fetchBioWithDelay(person) {
-                const delay = person === 'Bob' ? 2000 : 200;
-                
-                return new Promise(resolve => {
-                    setTimeout(() => {
-                        console.log("Fetching bio for " + person + " with delay of " + delay + "ms");
-                        resolve('This is ' + person + '’s bio.');
-                    }, delay);
-                })
-            }
+    const ref = React.useRef();
 
-            async function fetchBio(person) {
-                if (promiseCache.has(person)) {
-                    return promiseCache.get(person);
-                }
-                const promise = fetchBioWithDelay(person);
-                promiseCache.set(person, promise);
-                return promise;
-            }
+    React.useEffect(() => {
+        ref.current.focus();
+    }, [])
+  
+    return (
+        <>
+            <h1>Counters</h1>
+            <section>
+                <Counter name="One" />
+                 <Counter name="Two" ref={ref} />
+            </section>
+        </>
+    );
+}
 
-            function Bio({ person }) {
-                const bio = use(fetchBio(person));
-                return <p><i>{bio}</i></p>;
-            }
+function Counter({name, ref}) {
 
-            function App() {
-                const [person, setPerson] = useState('Alice');
+    const [numOfClicks, setNumOfClicks] = React.useState({total: 0});
 
-                return (
-                    <>
-                        <select value={person} onChange={e => {
-                            setPerson(e.target.value);
-                        }}>
-                            <option value="Alice">Alice</option>
-                            <option value="Bob">Bob</option>
-                            <option value="Taylor">Taylor</option>
-                        </select>
-                        <hr />
-                        <Suspense fallback={<p><i>Loading...</i></p>}>
-                            <Bio person={person} />
-                        </Suspense>
-                    </>
-                );
-            }
+    function incrementCounter() {
+       setNumOfClicks({...numOfClicks, total: numOfClicks.total + 1})
+       
+    }
+
+        return (
+        <article>
+            <h2>Counter {name}</h2>
+            <p>You clicked {numOfClicks.total} times</p>
+              <p>
+                <button className="button" onClick={incrementCounter} ref={ref}>
+                    Click me
+                </button>
+            </p>
+        </article>
+    );
+}
 
             // Ensure DOM is ready, then render
             const rootElement = document.getElementById('app');
