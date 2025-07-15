@@ -1,20 +1,31 @@
-import React from "react";
 
 const rootNode = document.getElementById('app');
 const root = ReactDOM.createRoot(rootNode);
-let counterName = "One";
 root.render(<App />);
 
-function App() {
+/* Objects */
+class CounterObj  {
+    constructor(name) {
+        this.name = name;
+        this.show = true;
+        this.total = 0;
+    }
+}
 
-  
-  
+const counterData = [
+    new CounterObj('A'),
+    new CounterObj('B'),
+    new CounterObj('C')
+]
+/* End Objects */
+
+function App() {
     return (
         <>
             <h1>Counters</h1>
             <section>
-                <Counter name="One" />
-                 <Counter name="Two" />
+               <CounterList />
+               <CounterSummary />
             </section>
         </>
     );
@@ -37,10 +48,20 @@ function useCounter() {
         setCounterVal({...counterVal, total: counterVal.total + 1});
     }
 
-    return {
+    return [
         counterVal,
         increment
-    }
+    ]
+}
+
+function CounterList() {
+        return (
+           <section>
+             { counterData.map((counter, index) => (
+                <Counter name={counter.name} />
+            ))}
+           </section>
+        )
 }
 
 function Counter(props) {
@@ -48,11 +69,11 @@ function Counter(props) {
     const [counter, incrementCount] = useCounter();
 
 
-   const updateTitle = useDocumentTitle("Clicks: " + numOfClicks.total);
+   const updateTitle = useDocumentTitle("Clicks: " + counter.total);
 
-    function incrementCounter() {
+    function handleIncrement() {
        incrementCount();
-       
+        console.log(counterData);
     }
 
         return (
@@ -60,10 +81,19 @@ function Counter(props) {
             <h2>Counter {props.name}</h2>
             <p>You clicked {counter.total} times</p>
               <p>
-                <button className="button" onClick={incrementCounter}>
+                <button className="button" onClick={handleIncrement}>
                     Click me
                 </button>
             </p>
         </article>
     );
+}
+
+function CounterSummary() {
+    const summary = counterData.map((counter) => {
+        return counter.name + '(' + counter.total + ')';
+    }).join(', ');
+    return(
+        <p>Summary: {summary}</p>
+    )
 }
