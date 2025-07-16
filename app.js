@@ -100,7 +100,9 @@ function Counter({counter, index, increment, decrement}) {
 }
 
 function CounterSummary({counterData }) {
-    const summary = [...counterData].sort((a, b) =>  b.total - a.total).filter((counter) => counter.show).map((counter) => {
+    const summary = [...counterData].sort((a, b) =>  b.total - a.total)
+                                    .filter((counter) => counter.show)
+                                    .map((counter) => {
         return counter.name + '(' + counter.total + ')';
     }).join(', ');
     return(
