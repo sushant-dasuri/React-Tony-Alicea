@@ -38,9 +38,7 @@ const decrement = (index) => {
             <h1>Counters</h1>
             <section>
                <CounterList counterData={counterData} increment={increment} decrement={decrement} />
-               <CounterTools>
-                  <CounterSummary counterData={counterData} />
-               </CounterTools>
+               <CounterTools counterData={counterData} />
             </section>
         </>
     );
@@ -112,10 +110,8 @@ function CounterSummary({counterData }) {
     )
 }
 
-function CounterTools({children}) {
+function CounterTools({counterData}) {
     return (
-        <>
-        {children}
-        </>
+         <CounterSummary counterData={counterData} />
     )
 }
