@@ -1,4 +1,3 @@
-
 const rootNode = document.getElementById('app');
 const root = ReactDOM.createRoot(rootNode);
 root.render(<App />);
@@ -83,6 +82,7 @@ function CounterList() {
 function Counter({counter, index}) {
 
     const [contextData, increment, decrement] = React.useContext(CounterContext);
+    const id = React.useId();
 
     function handleIncrementClick() {
        increment(index);
@@ -93,21 +93,19 @@ function Counter({counter, index}) {
     }
 
         return (
-        <dl className="counter">
-            <dt>{counter.name}</dt>
-            <dd className="counter__value">
-                 { counter.total > 0 ? <button className="button" onClick={handleDecrementClick}>
+        <fieldset className="counter" id={id}>
+            <legend className="counter__legend" id={id + "-legend"}>{counter.name}</legend>
+                 { counter.total > 0 ? <button className="button" onClick={handleDecrementClick} aria-label="Decrease Counter" id={id + "-decrement"}>
                     -
                 </button> : <div className="empty_counter"></div>}
-                {counter.total}
-                  <button className="button" onClick={handleIncrementClick}>
+                <p aria-labelledby={id + "-legend"}> {counter.total}</p>
+                  <button className="button" onClick={handleIncrementClick} aria-label="Increase Counter" id={id + "-increment"}>
                    +
                 </button>
-                </dd>
               <div>
               
             </div>
-        </dl>
+        </fieldset>
     );
 }
 
