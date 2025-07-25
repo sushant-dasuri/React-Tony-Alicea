@@ -14,8 +14,8 @@ class CounterObj  {
 
 /* End Objects */
 
-const counterContext = React.createContext(3);
-const otherContext = React.createContext(4);
+const CounterContext = React.createContext(3);
+const OtherContext = React.createContext(4);
 
 function App() {
 
@@ -39,17 +39,17 @@ const decrement = (index) => {
 
 const contextData = [counterData, increment, decrement];
 
-console.log(counterContext);
+console.log(CounterContext);
 
     return (
         <>
-        <counterContext.Provider value={contextData}>
+        <CounterContext.Provider value={contextData}>
             <h1>Counters</h1>
             <section>
                <CounterList />
                <CounterTools />
             </section>
-        </counterContext.Provider>
+        </CounterContext.Provider>
 
         </>
     );
@@ -67,7 +67,7 @@ function useDocumentTitle (title) {
 
 
 function CounterList() {
-    const [contextData, increment, decrement] = React.useContext(counterContext);
+    const [contextData, increment, decrement] = React.useContext(CounterContext);
     const updateTitle = useDocumentTitle("Clicks: " + contextData.map((counter) => {
         return counter.total;
     }).join (', '))
@@ -82,7 +82,7 @@ function CounterList() {
 
 function Counter({counter, index}) {
 
-    const [contextData, increment, decrement] = React.useContext(counterContext);
+    const [contextData, increment, decrement] = React.useContext(CounterContext);
 
     function handleIncrementClick() {
        increment(index);
@@ -122,17 +122,17 @@ const contextData = [counterData, null, null];
 
 
     return (
-        <otherContext.Provider value={contextData}>
-        <counterContext.Provider value={contextData}>
+        <OtherContext.Provider value={contextData}>
+        <CounterContext.Provider value={contextData}>
             <CounterSummary />
-        </counterContext.Provider>
-        </otherContext.Provider>
+        </CounterContext.Provider>
+        </OtherContext.Provider>
     )
 }
 
 function CounterSummary() {
-        const [otherContextData, i, d] = React.useContext(otherContext);
-    const [contextData, increment, decrement] = React.useContext(counterContext);
+        const [OtherContextData, i, d] = React.useContext(OtherContext);
+    const [contextData, increment, decrement] = React.useContext(CounterContext);
 
     const summary = [...contextData].sort((a, b) =>  b.total - a.total)
                                     .filter((counter) => counter.show)
