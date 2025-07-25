@@ -11063,12 +11063,10 @@
     setTextContent(domElement, '');
   }
   function commitTextUpdate(textInstance, oldText, newText) {
-    console.log(`Updating text from "${oldText}" to "${newText}"`);
     textInstance.nodeValue = newText;
   }
   function appendChild(parentInstance, child) {
-    console.log(`Appending child...`);
-    console.log(child);
+  
     parentInstance.appendChild(child);
   }
   function appendChildToContainer(container, child) {
@@ -11076,15 +11074,9 @@
 
     if (container.nodeType === COMMENT_NODE) {
       parentNode = container.parentNode;
-      console.log(`Inserting child in container...`);
-      console.dir(child);
       parentNode.insertBefore(child, container);
     } else {
       parentNode = container;
-      console.log(`Appending child to container...`);
-      console.dir(child);
-      console.log("..the container is ...");
-      console.dir(parentNode);
       parentNode.appendChild(child);
     } // This container might be used for a portal.
     // If something inside a portal is clicked, that click should bubble
@@ -11115,17 +11107,12 @@
   }
 
   function removeChild(parentInstance, child) {
-      console.log(`Removing child...`);
-      console.log(child);
     parentInstance.removeChild(child);
   }
   function removeChildFromContainer(container, child) {
     if (container.nodeType === COMMENT_NODE) {
       container.parentNode.removeChild(child);
     } else {
-       console.log(`Removing child from container...`);
-      console.dir(container);
-      console.dir(child);
       container.removeChild(child);
     }
   }
@@ -14417,6 +14404,9 @@
         lastContextDependency = lastContextDependency.next = contextItem;
       }
     }
+
+    console.log(currentlyRenderingFiber);
+
 
     return value;
   }
@@ -26891,7 +26881,6 @@
 
 
       requestPaint();
-      console.log("Execution Context: " + executionContext);
       executionContext = prevExecutionContext; // Reset the priority to the previous non-sync value.
 
       setCurrentUpdatePriority(previousPriority);
@@ -28293,7 +28282,6 @@
           break;
       }
     }
-     console.log(workInProgress);
     return workInProgress;
   } // Used to reuse a Fiber for a second pass.
 

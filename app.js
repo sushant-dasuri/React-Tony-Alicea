@@ -14,6 +14,9 @@ class CounterObj  {
 
 /* End Objects */
 
+const counterContext = React.createContext(3);
+const otherContext = React.createContext(4);
+
 function App() {
 
     const [counterData, setCounterData] = React.useState([
@@ -33,13 +36,21 @@ const decrement = (index) => {
      newData[index].total = newData[index].total - 1 >= 0 ? newData[index].total - 1 : 0;
         setCounterData(newData);
 }
+
+const contextData = [counterData, increment, decrement];
+
+console.log(counterContext);
+
     return (
         <>
+        <counterContext.Provider value={contextData}>
             <h1>Counters</h1>
             <section>
-               <CounterList counterData={counterData} increment={increment} decrement={decrement} />
-               <CounterTools counterData={counterData} />
+               <CounterList />
+               <CounterTools />
             </section>
+        </counterContext.Provider>
+
         </>
     );
 }
@@ -55,22 +66,23 @@ function useDocumentTitle (title) {
 }
 
 
-function CounterList({counterData, increment, decrement}) {
-
-    const updateTitle = useDocumentTitle("Clicks: " + counterData.map((counter) => {
+function CounterList() {
+    const [contextData, increment, decrement] = React.useContext(counterContext);
+    const updateTitle = useDocumentTitle("Clicks: " + contextData.map((counter) => {
         return counter.total;
     }).join (', '))
         return (
            <section>
-             { counterData.map((counter, index) => (
-                <Counter counter={counter} index={index} increment={increment} decrement= {decrement} />
+             { contextData.map((counter, index) => (
+                <Counter counter={counter} index={index} />
             ))}
            </section>
         )
 }
 
-function Counter({counter, index, increment, decrement}) {
+function Counter({counter, index}) {
 
+    const [contextData, increment, decrement] = React.useContext(counterContext);
 
     function handleIncrementClick() {
        increment(index);
@@ -99,8 +111,30 @@ function Counter({counter, index, increment, decrement}) {
     );
 }
 
-function CounterSummary({counterData }) {
-    const summary = [...counterData].sort((a, b) =>  b.total - a.total)
+function CounterTools() {
+    const [counterData, setCounterData] = React.useState([
+    new CounterObj('A', true, 3),
+    new CounterObj('B', true, 2),
+    new CounterObj('C', true, 6)
+])
+
+const contextData = [counterData, null, null];
+
+
+    return (
+        <otherContext.Provider value={contextData}>
+        <counterContext.Provider value={contextData}>
+            <CounterSummary />
+        </counterContext.Provider>
+        </otherContext.Provider>
+    )
+}
+
+function CounterSummary() {
+        const [otherContextData, i, d] = React.useContext(otherContext);
+    const [contextData, increment, decrement] = React.useContext(counterContext);
+
+    const summary = [...contextData].sort((a, b) =>  b.total - a.total)
                                     .filter((counter) => counter.show)
                                     .map((counter) => {
         return counter.name + '(' + counter.total + ')';
@@ -110,8 +144,3 @@ function CounterSummary({counterData }) {
     )
 }
 
-function CounterTools({counterData}) {
-    return (
-         <CounterSummary counterData={counterData} />
-    )
-}
