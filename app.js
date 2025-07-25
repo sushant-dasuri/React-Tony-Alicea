@@ -4,7 +4,8 @@ root.render(<App />);
 
 /* Objects */
 class CounterObj  {
-    constructor(name, show, total) {
+    constructor(id, name, show, total) {
+        this.id = id;
         this.name = name;
         this.show = show;
         this.total = total;
@@ -14,14 +15,12 @@ class CounterObj  {
 /* End Objects */
 
 const CounterContext = React.createContext(3);
-const OtherContext = React.createContext(4);
-
 function App() {
 
     const [counterData, setCounterData] = React.useState([
-    new CounterObj('A', true, 0),
-    new CounterObj('B', false, 0),
-    new CounterObj('C', true, 0)
+    new CounterObj(1, 'A', true, 0),
+    new CounterObj(2, 'B', true, 0),
+    new CounterObj(3, 'C', true, 0)
 ])
 
 const increment = (index) => {
@@ -73,7 +72,7 @@ function CounterList() {
         return (
            <section>
              { contextData.map((counter, index) => (
-                <Counter counter={counter} index={index} />
+                <Counter counter={counter} index={index} key={counter.id} />
             ))}
            </section>
         )
@@ -110,35 +109,26 @@ function Counter({counter, index}) {
 }
 
 function CounterTools() {
-    const [counterData, setCounterData] = React.useState([
-    new CounterObj('A', true, 3),
-    new CounterObj('B', true, 2),
-    new CounterObj('C', true, 6)
-])
-
-const contextData = [counterData, null, null];
-
-
     return (
-        <OtherContext.Provider value={contextData}>
-        <CounterContext.Provider value={contextData}>
             <CounterSummary />
-        </CounterContext.Provider>
-        </OtherContext.Provider>
     )
 }
 
 function CounterSummary() {
-        const [OtherContextData, i, d] = React.useContext(OtherContext);
     const [contextData, increment, decrement] = React.useContext(CounterContext);
 
-    const summary = [...contextData].sort((a, b) =>  b.total - a.total)
+    const filteredSortedData = [...contextData].sort((a, b) =>  b.total - a.total)
                                     .filter((counter) => counter.show)
-                                    .map((counter) => {
-        return counter.name + '(' + counter.total + ')';
-    }).join(', ');
     return(
-        <p>Summary: {summary}</p>
+        <section>Summary: {filteredSortedData.map((counter, index) => (
+            <CounterSummaryDetail counter={counter} key={counter.id} />
+        ))}</section>
+    )
+}
+
+function CounterSummaryDetail({ counter}) {
+    return (
+        <p>{counter.name} ({counter.total})</p>
     )
 }
 
