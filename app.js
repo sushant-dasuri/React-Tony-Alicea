@@ -118,20 +118,40 @@ function CounterSummary({counterData, visibleTab, setVisibleTab}) {
         return  [...counterData].filter((counter) => {
             return  counter.tab === visibleTab })
         }, [counterData, visibleTab])
+
+        const setVisibleTab1 = React.useCallback(() => {
+        setVisibleTab(1);
+        }, [])
+        
+          const setVisibleTab2 = React.useCallback(() => {
+        setVisibleTab(2);
+        }, [])
+
     return(
         <>
-        <header>
-            <a href="#" onClick={() => setVisibleTab(1)}>Tab 1</a> &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#" onClick={() => setVisibleTab(2)}>Tab 2</a>
-        </header>
-        <section>Summary: {filteredSortedData.map((counter, index) => (
+    
+        <section> 
+            <CounterSummaryHeader setVisibleTab1={setVisibleTab1} setVisibleTab2={setVisibleTab2} />
+            {filteredSortedData.map((counter, index) => (
             <CounterSummaryDetail name={counter.name} total = {counter.total} key={counter.id} />
         ))}</section>
         </>
     )
 }
 
+const CounterSummaryHeader = React.memo(function counterSummaryHeader({setVisibleTab1, setVisibleTab2}) {
+    console.log("Rendering CounterSummaryHeader");
+    return (
+            <header>
+            <a href="#" onClick={setVisibleTab1}>Tab 1</a> &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#" onClick={setVisibleTab2}>Tab 2</a>
+        </header>
+    )
+
+})
+
 function CounterSummaryDetail({ name, total }) {
+        console.log("Rendering CounterSummaryDetail");
     return (
         <p>{name} ({total})</p>
 
