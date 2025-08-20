@@ -14,38 +14,87 @@ class CounterObj  {
 
 /* End Objects */
 
+
+const CounterContext = React.createContext(null);
+const CounterDispatchContext = React.createContext(null);
+const TabContext = React.createContext(null);
+const TabDispatchContext = React.createContext(null);
+
+function counterReducer(counterData, action) {
+    switch (action.type) {
+        case 'increment' : {
+            return counterData.map((counter) => {
+                if(counter.id === action.id) {
+                    return {...counter, total: counter.total + 1}
+                }
+                 else {
+                    return counter;
+                }
+            })
+        }
+
+        case decrement: {
+            return counterData.map((counter) => {
+                if(counter.id === action.id) {
+                    return {...counter, total: counter.total - 1 >= 0 ? counter.total - 1 : 0}
+                }
+                else {
+                    return counter;
+                }
+            })
+        }
+
+        default: {
+            throw new Error(`Unknown action type: ${action.type}`);
+    }
+
+}
+}
+
+function tabReducer(visibleTab, action) {
+    switch (action.type) {
+        case 'changeTab' : {
+            if(visibleTab === action.tab) {
+                return visibleTab; // No change if the same tab is clicked
+            }
+
+            else {
+                return action.tab; // Change to the new tab
+            }
+        }
+
+         default: {
+            throw new Error(`Unknown action type: ${action.type}`);
+    }
+
+    }
+}
+
 function App() {
 
-    const [counterData, setCounterData] = React.useState([
+    const [counterData, counterDispatch] = React.useReducer(counterReducer, [
     new CounterObj(1, 'A', 1, 0),
     new CounterObj(2, 'B', 2, 0),
     new CounterObj(3, 'C', 1, 0)
 ])
 
-const [visibleTab, setVisibleTab] = React.useState(1);
-
- const increment = (index) => {
-        const newData = [...counterData];
-        newData[index] = {...newData[index], total: newData[index].total + 1};
-        setCounterData(newData);
-    }
-
-    const decrement = (index) => {
-        const newData = [...counterData];
-        const decrementedCounter = newData[index].total - 1;
-        newData[index] = {...newData[index], total: Math.max(0, decrementedCounter)};
-        setCounterData(newData);
-    }
-
-
+const [visibleTab, tabDispatch] = React.useReducer(tabReducer, 1);
 
     return (
         <>
+        <CounterContext.Provider value={counterData}>
+        <CounterDispatchContext.Provider value={counterDispatch}>
+            <TabContext.Provider value={visibleTab}>
+            <TabDispatchContext.Provider value={tabDispatch}>
             <h1>Counters</h1>
             <section>
-               <CounterList counterData = {counterData} increment={increment} decrement={decrement} />
-               <CounterTools counterData = {counterData} increment={increment} decrement={decrement} visibleTab={visibleTab} setVisibleTab={setVisibleTab} />
+               <CounterList  />
+               <CounterTools />
             </section>
+            </TabDispatchContext.Provider>
+            </TabContext.Provider>
+            </CounterDispatchContext.Provider>  
+          </CounterContext.Provider>
 
         </>
     );
@@ -62,29 +111,33 @@ function useDocumentTitle (title) {
 }
 
 
-function CounterList({counterData, increment, decrement}) {
+function CounterList() {
+    const counterData = React.useContext(CounterContext);
     const updateTitle = useDocumentTitle("Clicks: " + counterData.map((counter) => {
         return counter.total;
     }).join (', '))
         return (
            <section>
-             { counterData.map((counter, index) => (
-                <Counter counter={counter} index={index} key={counter.id} increment={increment} decrement={decrement} />
+             { counterData.map((counter) => (
+                <Counter counter={counter} key={counter.id} />
             ))}
            </section>
         )
 }
 
-function Counter({counter, index, increment, decrement}) {
-
+function Counter({counter}) {
+    const counterDispatch = React.useContext(CounterDispatchContext);
     const id = React.useId();
+     console.log('Counter rendering');
 
-    function handleIncrementClick() {
-       increment(index);
+    function handleIncrementClick(event) {
+        counterDispatch({type: 'increment', id: counter.id});
+        event.preventDefault();
     }
 
-    function handleDecrementClick() {
-       decrement(index);
+    function handleDecrementClick(event) {
+       counterDispatch({type: 'decrement', id: counter.id});
+        event.preventDefault();
     }
 
         return (
@@ -104,27 +157,31 @@ function Counter({counter, index, increment, decrement}) {
     );
 }
 
-function CounterTools({counterData, visibleTab, setVisibleTab}) {
+function CounterTools() {
     return (
-            <CounterSummary counterData ={counterData} visibleTab={visibleTab}  setVisibleTab={setVisibleTab} />
+            <CounterSummary />
     )
 }
 
-function CounterSummary({counterData, visibleTab, setVisibleTab}) {
-    console.log("Rendering CounterSummary");
-
+function CounterSummary() {
+    const counterData = React.useContext(CounterContext);
+    const visibleTab = React.useContext(TabContext);
+    const tabDispatch = React.useContext(TabDispatchContext);
     const filteredSortedData = React.useMemo(() => { 
         console.log("Filtering Data");
         return  [...counterData].filter((counter) => {
             return  counter.tab === visibleTab })
         }, [counterData, visibleTab])
 
-        const setVisibleTab1 = React.useCallback(() => {
-        setVisibleTab(1);
+        const setVisibleTab1 = React.useCallback((event) => {
+            tabDispatch({type: 'changeTab', tab: 1});
+            event.preventDefault();
         }, [])
         
-          const setVisibleTab2 = React.useCallback(() => {
-        setVisibleTab(2);
+          const setVisibleTab2 = React.useCallback((event) => {
+            tabDispatch({type: 'changeTab', tab: 2});
+             event.preventDefault();
+           
         }, [])
 
     return(
