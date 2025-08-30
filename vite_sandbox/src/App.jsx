@@ -70,11 +70,11 @@ function tabReducer(visibleTab, action) {
 
 function App() {
 
-    const [counterData, counterDispatch] = useReducer(counterReducer, [
-    new CounterObj(1, 'A', 1, 0),
-    new CounterObj(2, 'B', 2, 0),
-    new CounterObj(3, 'C', 1, 0)
-])
+     const [counterData, counterDispatch] = useReducer(counterReducer, [
+            new CounterObj(1, { longName: 'Counter A', shortName: 'A' }, 1, 0),
+            new CounterObj(2, { longName: 'Counter B', shortName: 'B' }, 2, 0),
+            new CounterObj(3, { longName: 'Counter C', shortName: 'C' }, 1, 0)
+        ]);
 
 const [visibleTab, tabDispatch] = useReducer(tabReducer, 1);
 
@@ -140,7 +140,7 @@ function Counter({counter}) {
 
         return (
         <fieldset className="counter" id={id}>
-            <legend className="counter__legend" id={id + "-legend"}>{counter.name}</legend>
+            <legend className="counter__legend" id={id + "-legend"}>{counter.name.longName}</legend>
                  { counter.total > 0 ? <button className="button" onClick={handleDecrementClick} aria-label="Decrease Counter" id={id + "-decrement"}>
                     -
                 </button> : <div className="empty_counter"></div>}
@@ -206,9 +206,11 @@ const CounterSummaryHeader = memo(function counterSummaryHeader({setVisibleTab1,
 })
 
 function CounterSummaryDetail({ name, total }) {
+       //name.shortName = name.shortName + ':'; // different delimiters for different languages
+    const cName = {...name, shortName: name.shortName + ':'};
         console.log("Rendering CounterSummaryDetail");
     return (
-        <p>{name} ({total})</p>
+        <p>{cName.shortName} ({total})</p>
 
     )
 };
