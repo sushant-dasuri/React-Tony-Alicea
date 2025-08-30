@@ -125,8 +125,25 @@ function CounterList() {
 
 function Counter({counter}) {
     const counterDispatch = useContext(CounterDispatchContext);
+    const visibleTab = useContext(TabContext);
     const id = useId();
-     console.log('Counter rendering');
+
+    useEffect(() => {
+        let timerId;
+        let seconds = 0;
+
+        if(counter.tab === visibleTab && counter.name.shortName === 'A') {
+            timerId = setInterval (() => {
+                seconds++;
+
+                  console.log(`Time since ${counter.name.shortName} was available and/or clicked: ${seconds}s`);
+            }, 1000);
+        }
+
+        return () => {
+            clearInterval(timerId);
+        }
+    }, [counter.total]);
 
     function handleIncrementClick(event) {
         counterDispatch({type: 'increment', id: counter.id});
@@ -166,7 +183,6 @@ function CounterSummary() {
     const visibleTab = useContext(TabContext);
     const tabDispatch = useContext(TabDispatchContext);
     const filteredSortedData = useMemo(() => { 
-        console.log("Filtering Data");
         return  [...counterData].filter((counter) => {
             return  counter.tab === visibleTab })
         }, [counterData, visibleTab])
@@ -195,7 +211,6 @@ function CounterSummary() {
 }
 
 const CounterSummaryHeader = memo(function counterSummaryHeader({setVisibleTab1, setVisibleTab2}) {
-    console.log("Rendering CounterSummaryHeader");
     return (
             <header>
             <a href="#" onClick={setVisibleTab1}>Tab 1</a> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -208,7 +223,6 @@ const CounterSummaryHeader = memo(function counterSummaryHeader({setVisibleTab1,
 function CounterSummaryDetail({ name, total }) {
        //name.shortName = name.shortName + ':'; // different delimiters for different languages
     const cName = {...name, shortName: name.shortName + ':'};
-        console.log("Rendering CounterSummaryDetail");
     return (
         <p>{cName.shortName} ({total})</p>
 
