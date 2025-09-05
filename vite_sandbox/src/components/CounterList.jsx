@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { CounterContext } from "../contexts/context";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { Counter } from "./Counter";
-import './CounterList.css';
+import  styles from './CounterList.module.css';
 
 
 export function CounterList() {
@@ -12,7 +12,7 @@ export function CounterList() {
     }).join (', '))
         return (
            <section>
-            <h2 className="header">Counters</h2>
+            <h2 className={styles.header}>Counters</h2>
              { counterData.map((counter) => (
                 <Counter counter={counter} key={counter.id} />
             ))}
